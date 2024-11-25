@@ -124,7 +124,6 @@ def crawl_reviews(driver, review_url):
                 break
         if more_review:
             more_review.click()
-            sleep(0.5)
 
     # 等待 1 秒鐘後，再次取得所有 .bwb7ce 的元素
     sleep(1)
