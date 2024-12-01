@@ -14,7 +14,7 @@ def main():
     # 讀取 input.txt 中的所有 Google 評論連結
     test_urls = read_input_file('./input/input.txt')
 
-    # 取得一個 WebDriver
+    # 取得一個 WebDriver，如果要不顯示瀏覽器，將 headless 設為 True
     test_driver = get_driver(headless=False)
 
     # 依照 test_urls 中的連結爬取評論
