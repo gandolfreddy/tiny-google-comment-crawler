@@ -33,34 +33,39 @@ def get_data_from_reviews(reviews_soup):
     '''
         從 BeautifulSoup 物件中取得評論的資料
     '''
-    reviews = reviews_soup.select('.bwb7ce')
+    reviews = reviews_soup.select('.jJc9Ad')
     pre_csv_data = [['Name', 'Experience',
-                     'Stars', 'Dine Type',
-                     'Comment', 'Rating']]
-    for review in reviews:
-        name_tag = review.select_one('.Vpc5Fe')
+                     'Stars', 'Comment', 'others']]
+    for review in reviews[:5]:
+        name_tag = review.select_one('.d4r55')
         name = name_tag.get_text() if name_tag else '匿名'
 
-        experience_tag = review.select_one('.GSM50')
+        experience_tag = review.select_one('.RfnDt')
         experience = experience_tag.get_text() if experience_tag else '未知'
 
-        stars_tag = review.select_one('.dHX2k')
+        stars_tag = review.select_one('.kvMYJc')
         stars = stars_tag.get_attribute_list(
             'aria-label')[0] if stars_tag else '未知'
 
-        dine_type_tag = review.select_one('.ME0dBc')
-        dine_type = dine_type_tag.get_text() if dine_type_tag else '未知'
-
-        rating_tag = review.select_one('.zMjRQd')
-        rating = rating_tag.get_text() if rating_tag else '未知'
-
-        comment_tag = review.select_one('.OA1nbd')
+        comment_tag = review.select_one('.wiI7pd')
         comment = comment_tag.get_text() if comment_tag else '未知'
-        comment = comment.replace(rating, '')
+
+        others = ''
+        other_tag = comment_tag.find_next_sibling() if comment_tag else None
+        if other_tag:
+            other_sub_tags = other_tag.find_all(recursive=False)
+            for sub_tag in other_sub_tags:
+                tags = sub_tag.select('.RfDO5c')
+                if len(tags) == 1:
+                    others += f'{tags[0].get_text()}\n'
+                else:
+                    title,  content = tags
+                    others += f'{title.get_text()}：{content.get_text()}\n'
+        others = others if others else '未知'
 
         pre_csv_data.append([
             name, experience, stars,
-            dine_type, comment, rating
+            comment, others
         ])
 
     return pre_csv_data
@@ -68,7 +73,7 @@ def get_data_from_reviews(reviews_soup):
 
 if __name__ == '__main__':
     test_title, test_reviews_soup = refine_reviews(
-        './reviews_jsons/多那之高雄德民門市_reviews.json')
+        './reviews_jsons/熊翻滾一百八十度暖心鍋物-楠梓人氣鍋物-熱門鍋物-精緻鍋物-特色鍋物-必吃火鍋-聚餐餐廳-在地推薦火鍋-個人火鍋_reviews.json')
     test_pre_csv_data = get_data_from_reviews(test_reviews_soup)
 
     print(write_into_csv(
