@@ -36,7 +36,7 @@ def get_data_from_reviews(reviews_soup):
     reviews = reviews_soup.select('.jJc9Ad')
     pre_csv_data = [['Name', 'Experience',
                      'Stars', 'Comment', 'others']]
-    for review in reviews[:5]:
+    for review in reviews:
         name_tag = review.select_one('.d4r55')
         name = name_tag.get_text() if name_tag else '匿名'
 
