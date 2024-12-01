@@ -58,7 +58,7 @@ def get_data_from_reviews(reviews_soup):
                 tags = sub_tag.select('.RfDO5c')
                 if len(tags) == 1:
                     others += f'{tags[0].get_text()}\n'
-                else:
+                elif len(tags) == 2:
                     title,  content = tags
                     others += f'{title.get_text()}：{content.get_text()}\n'
         others = others if others else '未知'
