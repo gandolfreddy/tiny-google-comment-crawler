@@ -15,7 +15,7 @@ def main():
     test_urls = read_input_file('./input/input.txt')
 
     # 取得一個 WebDriver
-    test_driver = get_driver(headless=False)
+    test_driver = get_driver(headless=True)
 
     # 依照 test_urls 中的連結爬取評論
     print('--- Start to crawl reviews ---')
